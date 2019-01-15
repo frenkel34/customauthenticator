@@ -1,0 +1,296 @@
+<html>
+	<head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+        <style>
+			.bottom {
+			  position: fixed;
+			  left: 0;
+			  bottom: 0;
+			  width: 100%;
+			  text-align: center;				
+			}
+
+        	.nav {
+        		display: none;
+        	}
+
+        	h1, body {
+        		font-family: 'Lora';
+        		margin-left: 0;
+        		margin-right: 0;
+        		margin-top: 30px;
+        	}
+
+        	body {
+        		margin-left: 30vw-100px;
+        	}
+
+        	input[type="button"] {
+        		width: 20vw;
+        		line-height: 30px;
+				margin-top: 10px;
+				margin-bottom: 10px;
+        		background-color: #00CD76;
+        		border-radius: 0px;
+        		box-shadow: 0px;
+        		color: #fff;
+        		border-style: solid;
+        		border-width: 1px;
+        		border-color: #000;
+        	}
+
+        	input.newSecret {
+        		line-height: 31px;
+				margin-top: 11px;
+				margin-bottom: 10px;
+        		border-style: solid;
+        		background-color: #fff;
+        		border-radius: 0px;
+        		box-shadow: 0px;
+        		color: #00CD76;
+        		border-style: solid;
+        		border-width: 1px;
+        	}
+
+        	.otp {
+        		color: #00CD76;
+        	}
+
+			.progress-bar {
+				margin-top: 10px;
+				margin-bottom: 10px;
+			    width: calc(100% - 6px);
+			    height: 10px;
+			    background: #fff;
+			    padding: 3px;
+			    border-radius: 3px;
+			    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+			}
+
+			.progress-bar-fill {
+			    display: block;
+			    height: 10px;
+			    background: #00CD76;
+			    border-radius: 3px;
+			    /*transition: width 250ms ease-in-out;*/
+			    transition: width 1s ease-in-out;
+			}        	
+        </style>
+		<script>
+			function dec2hex(s) { return (s < 15.5 ? '0' : '') + Math.round(s).toString(16); }
+			    function hex2dec(s) { return parseInt(s, 16); }
+
+			    function base32tohex(base32) {
+			        var base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+			        var bits = "";
+			        var hex = "";
+
+			        for (var i = 0; i < base32.length; i++) {
+			            var val = base32chars.indexOf(base32.charAt(i).toUpperCase());
+			            bits += leftpad(val.toString(2), 5, '0');
+			        }
+
+			        for (var i = 0; i+4 <= bits.length; i+=4) {
+			            var chunk = bits.substr(i, 4);
+			            hex = hex + parseInt(chunk, 2).toString(16) ;
+			        }
+			        return hex;
+
+			    }
+
+			    function leftpad(str, len, pad) {
+			        if (len + 1 >= str.length) {
+			            str = Array(len + 1 - str.length).join(pad) + str;
+			        }
+			        return str;
+			    }
+
+			    function updateOtp() {
+			            
+			        var key = base32tohex($('.newSecret').val());
+			        var epoch = Math.round(new Date().getTime() / 1000.0);
+			        var time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
+
+			        console.log('debug:' + key);
+			        console.log('debug:' + epoch);
+			        console.log('debug:' + time);
+
+			        // updated for jsSHA v2.0.0 - http://caligatio.github.io/jsSHA/
+			        var shaObj = new jsSHA("SHA-1", "HEX");
+			        shaObj.setHMACKey(key, "HEX");
+			        shaObj.update(time);
+			        var hmac = shaObj.getHMAC("HEX");
+
+			        var user = 'Okta: mark.maf@okta-demo.nl'
+			        $('#qrImg').attr('src', 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=200x200&chld=M|0&cht=qr&chl=otpauth://totp/'+ user +'%3Fsecret%3D' + $('#secret').val());
+			        $('#secretHex').text(key);
+			        $('#secretHexLength').text((key.length * 4) + ' bits'); 
+			        $('#epoch').text(time);
+			        $('#hmac').empty();
+
+			        if (hmac == 'KEY MUST BE IN BYTE INCREMENTS') {
+			            $('#hmac').append($('<span/>').addClass('label important').append(hmac));
+			        } else {
+			            var offset = hex2dec(hmac.substring(hmac.length - 1));
+			            var part1 = hmac.substr(0, offset * 2);
+			            var part2 = hmac.substr(offset * 2, 8);
+			            var part3 = hmac.substr(offset * 2 + 8, hmac.length - offset);
+			            if (part1.length > 0 ) $('#hmac').append($('<span/>').addClass('label label-default').append(part1));
+			            $('#hmac').append($('<span/>').addClass('label label-primary').append(part2));
+			            if (part3.length > 0) $('#hmac').append($('<span/>').addClass('label label-default').append(part3));
+			        }
+
+			        var otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
+			        otp = (otp).substr(otp.length - 6, 6);
+
+			        $('#otp').text(otp);
+			    }
+
+			function timer()
+			{
+			    var epoch = Math.round(new Date().getTime() / 1000.0);
+			    var countDown = 30 - (epoch % 30);
+			    if (epoch % 30 == 0) updateOtp();
+			    $('#updatingIn').text(countDown);
+			    var percentage = countDown * (100/30);
+			    percentage = Math.round(percentage)
+			    percentage = 100 - percentage
+			    //console.log(percentage);
+			    $(".progress-bar-fill").attr('style', 'width: '+ percentage +'%');
+			    
+			}
+
+			function startAuthenticator() {
+			        updateOtp();
+
+			        $('#update').click(function (event) {
+			            updateOtp();
+			            event.preventDefault();
+			        });
+
+			        $('#secret').keyup(function () {
+			            updateOtp();
+			        });
+			        
+			        setInterval(timer, 1000);
+		  			$(".page").hide();
+		  			$(".timer").show();
+		  			$(".progress-bar").show();
+					$(".authenticator").show();
+
+			};
+
+
+		</script>
+	</head>
+	<body>
+		<center><img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
+		<div class="container-fluid">
+		       <div>
+		           <div class="row">
+		        <div class="span8">
+		          <h1 class="toggleSecret">{ custom authenticator }</h1>
+		        </div>
+            	<div id="secret" class="page secret">
+                    <div class="clearfix">
+                        <label for="secret">Secret (base32)</label>
+                        <div class="input"><input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><input class="storeSecret" type="button" value="save"></div>
+                        
+                    </div>
+            	</div>
+
+                <div class="clearfix" class="timer">
+                    <label></label>
+                    <div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
+                </div>
+				<div class="progress-bar">
+		    		<span class="progress-bar-fill" style="width: 100%"></span>
+				</div>
+		        <ul class="nav">
+		        	<input page="secret" type="button" class="menuitem" value="Provide secret" />
+		        	<input page="authenticator" type="button" class="menuitem" value="Authenticator" />
+		        	<input page="config" type="button" class="menuitem" value="Config" />
+		        </ul>
+		        </div>
+		            <div class="row">
+
+		                <form>
+		                	<div id="config" class="page config">
+			                    <div class="clearfix">
+			                        <label>Secret (hex)</label>
+			                        <div class="input"><span class="label label-default" id="secretHex"></span>
+			                            <span id='secretHexLength'></span></div>
+			                    </div>
+			                    <!-- /clearfix -->
+			                    <div class="clearfix">
+			                        <label>QR Code</label>
+			                        <div class="input"><img id="qrImg" src="" /></div>
+			                    </div>
+			                    <!-- /clearfix -->
+			                    <div class="clearfix">
+			                        <label>Unix epoch div 30 (padded hex)</label>
+			                        <div class="input"><span class="label label-default" id='epoch'></span></div>
+			                    </div>
+			                    <!-- /clearfix -->
+			                    <div class="clearfix">
+			                        <label>HMAC(secret, time)</label>
+			                        <div class="input" id='hmac'></div>
+			                    </div>
+		                	</div>
+		                	<div id="authenticator" class="page authenticator">
+			                    <div class="clearfix">
+			                        <label>One-time Password</label>
+			                        <div class="input otp"><span class="label label-primary" style="font-size: 400%" id='otp'></span></div>
+			                    </div>
+			                    <!-- /clearfix -->
+			                </div>
+		                    <!-- /clearfix -->
+		                    
+		            
+
+		                </form>
+		                </div>
+		            </div>
+		            <p class="bottom">This app is created for Degroof Petercam by Okta</p>
+</center>
+	</body>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			console.log('document ready');
+			$(".page").hide();
+			var storedSecret = localStorage.getItem('secret')
+			if (storedSecret) {
+				console.log('a secret has been configured within the app');
+				$(".newSecret").val(storedSecret);
+				startAuthenticator();
+				$(".authenticator").show();
+			} else {
+				console.log('the secret needs to be configured in the app');
+				$(".progress-bar").hide();
+				$(".timer").hide();
+				$(".secret").show();
+			}
+		})
+		
+		$(".menuitem").click(function() {
+			var page = $( this ).attr('page');
+			$(".page").hide();
+			$("."+page).show();
+		})
+
+		$(".storeSecret").click(function(){
+			var newSecret = $(".newSecret").val();
+			console.log('storing new secret in app');
+			localStorage.setItem('secret', newSecret);
+			if (newSecret != '') {
+				startAuthenticator();
+			}
+		})
+
+		$(".toggleSecret").click(function() {
+			$(".secret").slideToggle()
+		});
+	</script>
+</html>
