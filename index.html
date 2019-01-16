@@ -255,7 +255,6 @@
 				<div class="scan">
 					<a href="href=javascript:scan();"><div class="scanSecret button" type="button" value="Scan QR code"></a>
 				</div>
-
 				<div class="progress-bar">
 		    		<span class="progress-bar-fill" style="width: 100%"></span>
 				</div>
@@ -321,9 +320,10 @@
 				console.log('the secret needs to be configured in the app');
 				$(".progress-bar").hide();
 				$(".timer").hide();
-				$(".scan").show();
+
 //				$(".secret").show();
 			}
+			$(".scan").show();
 		})
 		
 		$(".menuitem").click(function() {
