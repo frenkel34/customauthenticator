@@ -8,6 +8,9 @@
         PhoneGap Team
     </author>
     <content src="index.html" />
+    <plugin name="phonegap-plugin-barcodescanner" source="npm" />
+    <plugin name="org.apache.cordova.dialogs" source="npm" />
+    <plugin name="org.apache.cordova.inappbrowser" source="npm" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="14" />
     <plugin name="cordova-universal-links-plugin" source="npm" />

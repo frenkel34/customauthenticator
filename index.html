@@ -3,6 +3,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="cordova.js"></script>
         <style>
 			.bottom {
 			  position: fixed;
@@ -84,6 +86,68 @@
 			}        	
         </style>
 		<script>
+			if(localStorage.getItem("LocalData") == null)
+			{
+			    var data = [];
+			    data = JSON.stringify(data);
+			    localStorage.setItem("LocalData", data);
+			}
+
+function scan()
+{
+    cordova.plugins.barcodeScanner.scan(
+        function (result) {
+            if(!result.cancelled)
+            {
+                if(result.format == "QR_CODE")
+                {
+                    navigator.notification.prompt("Please enter name of data",  function(input){
+                        var name = input.input1;
+                        var value = result.text;
+
+                        var data = localStorage.getItem("LocalData");
+                        console.log(data);
+                        data = JSON.parse(data);
+                        data[data.length] = [name, value];
+
+                        localStorage.setItem("LocalData", JSON.stringify(data));
+
+                        alert("Done");
+                    });
+                }
+            }
+        },
+        function (error) {
+            alert("Scanning failed: " + error);
+        }
+   );
+}
+$(document).on("pagebeforeshow", "#display", function() {
+    $("table#allTable tbody").empty();
+
+    var data = localStorage.getItem("LocalData");
+    console.log(data);
+    data = JSON.parse(data);
+
+    var html = "";
+
+    for(var count = 0; count < data.length; count++)
+    {
+        html = html + "<tr><td>" + data[count][0] + "</td><td><a href='javascript:openURL(\"" + data[count][1] + "\")'>" + data[count][1] + "</a></td></tr>";
+    }
+
+    $("table#allTable tbody").append(html).closest("table#allTable").table("refresh").trigger("create");
+
+});
+
+function openURL(url)
+{
+    window.open(url, '_blank', 'location=yes');
+}
+
+
+
+
 			function dec2hex(s) { return (s < 15.5 ? '0' : '') + Math.round(s).toString(16); }
 			    function hex2dec(s) { return parseInt(s, 16); }
 
@@ -191,6 +255,40 @@
 		</script>
 	</head>
 	<body>
+<div data-role="page" id="home">
+    <div data-role="header">
+        <h1>Home</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+        <p>
+            <a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Scan</button></a>
+            <a target="_blank" href="#display" style="text-decoration: none"><button>Display Scanned Data</button></a>
+        </p>
+    </div>
+</div>
+<div data-role="page" id="display">
+    <div data-role="header">
+        <a target="_blank" href="#home" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Display</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+        <table data-role="table" data-mode="column" id="allTable" class="ui-responsive table-stroke">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
 		<center><img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
 		<div class="container-fluid">
 		       <div>
