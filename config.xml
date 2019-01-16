@@ -11,6 +11,10 @@
     <plugin name="phonegap-plugin-barcodescanner" source="npm" />
     <plugin name="cordova-plugin-dialogs" source="npm" />
     <plugin name="cordova-plugin-inappbrowser" source="npm" />
+    <plugin name="cordova-plugin-camera" source="npm" />
+    <feature name="Camera">
+        <param name="ios-package" value="CDVCamera" />
+    </feature>
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="14" />
     <plugin name="cordova-universal-links-plugin" source="npm" />
