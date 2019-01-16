@@ -116,7 +116,7 @@ function scan()
             	var scannedSecret = getParameterByName('secret', result.text);
                 localStorage.setItem('secret', scannedSecret);
             	$("#qr").text(scannedSecret)
-            	$("#secret").val(scannedSecret);
+            	$(".newSecret").val(scannedSecret);
 				startAuthenticator()
 
 //                {
