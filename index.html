@@ -53,6 +53,7 @@
 
         	a {
         		text-decoration: none;
+        		color: #00CD76;
         	}
 
         	input.newSecret {
@@ -217,20 +218,26 @@
 			}
 
 			function startAuthenticator() {
-			        updateOtp();
+			        var secret = $(".newSecret").val();
+			        if (secret) {
+				        updateOtp();
 
-			        $('#update').click(function (event) {
-			            updateOtp();
-			            event.preventDefault();
-			        });
+				        $('#update').click(function (event) {
+				            updateOtp();
+				            event.preventDefault();
+				        });
 
-			        $('#secret').keyup(function () {
-			            updateOtp();
-			        });
-			        
-			        setInterval(timer, 1000);
-		  			$(".page").hide();
-		  			$("#pag_otp").show();
+				        $('#secret').keyup(function () {
+				            updateOtp();
+				        });
+				        
+				        setInterval(timer, 1000);
+			  			$(".page").hide();
+			  			$("#pag_otp").show();
+
+			        } else {
+			        	alert('invalid secret')
+			        }
 
 			};
 
@@ -243,9 +250,8 @@
 			<div class="container-fluid">
 			<h1 id="lbl_title">{ custom authenticator }</h1>
 			<div id="pag_secret" class="page">
-				<label for="secret">Secret (base32)</label><br>
-				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><br>
-				<input class="storeSecret" type="button" value="save"></div>
+				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" />
+				<a class="storeSecret" href="#">save secret</a> or <a class="resetSecret" href="#">reset app</a>
 			</div>
 			<div id="pag_otp" class="page">
 				<div class="clearfix" class="timer">
@@ -316,6 +322,13 @@
 		$(".scanSecret").click(function() {
 			alert('This app will open your camera, please center the QR in the screen');
 			scan();
+		})
+
+		$(".resetSecret").click(function() {
+			$(".newSecret").val('');
+			$(".page").hide()
+			$("#pag_scan").show();
+
 		})
 	</script>
 </html>
