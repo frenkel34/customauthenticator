@@ -100,27 +100,30 @@ function scan()
            	alert('start');
 
             if(!result.cancelled)
-            	alert('cancelled');
             {
                 if(result.format == "QR_CODE")
-                {
-                    navigator.notification.prompt("Please enter name of data",  function(input){
-                        var name = input.input1;
-                        var value = result.text;
+                localStorage.setItem('secret', result.text);
+            	$("#home").append(data);
 
-                        var data = localStorage.getItem("LocalData");
-                        console.log(data);
-                        data = JSON.parse(data);
-                        data[data.length] = [name, value];
+//                {
+//                    navigator.notification.prompt("Please enter name of data",  function(input){
+//                        var name = input.input1;
+//                        var value = result.text;
+//
+//                        var data = localStorage.getItem("LocalData");
+//                        console.log(data);
+//                        data = JSON.parse(data);
+//                        data[data.length] = [name, value];
 
-                        var StringValue = JSON.stringify(data)
-                        localStorage.setItem("LocalData", StringValue);
-                        alert(JSON.stringify(data));
-                        $("#home").append(data);
+//                        var StringValue = JSON.stringify(data)
+//                        localStorage.setItem("LocalData", StringValue);
+//                        alert(JSON.stringify(data));
+//                        $("#home").append(data);
 
                         alert("Done");
-                    });
-                }
+
+//                    });
+//                }
             }
         },
         function (error) {
@@ -265,43 +268,11 @@ cordova.plugins.diagnostic.isCameraAuthorized({
 
 			};
 
-
+			$("#qr").text(localStorage.getItem('secret'));
 		</script>
 	</head>
 	<body>
-<div data-role="page" id="home">
-    <div data-role="header">
-        <h1>Home</h1>
-    </div>
-
-    <div data-role="main" class="ui-content">
-        <p>
-            <a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Scan</button></a>
-            <a target="_blank" href="#display" style="text-decoration: none"><button>Display Scanned Data</button></a>
-        </p>
-    </div>
-</div>
-<div data-role="page" id="display">
-    <div data-role="header">
-        <a target="_blank" href="#home" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
-        <h1>Display</h1>
-    </div>
-
-    <div data-role="main" class="ui-content">
-        <table data-role="table" data-mode="column" id="allTable" class="ui-responsive table-stroke">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
+		<p><a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Scan</button></a>(<span id="qr"></span>)</p>
 
 		<center><img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
 		<div class="container-fluid">
