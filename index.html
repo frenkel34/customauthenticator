@@ -113,8 +113,10 @@ function scan()
                         data = JSON.parse(data);
                         data[data.length] = [name, value];
 
-                        localStorage.setItem("LocalData", JSON.stringify(data));
+                        var StringValue = JSON.stringify(data)
+                        localStorage.setItem("LocalData", StringValue);
                         alert(JSON.stringify(data));
+                        $("#home").append(data);
 
                         alert("Done");
                     });
