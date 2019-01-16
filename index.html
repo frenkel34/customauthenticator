@@ -34,7 +34,8 @@
         		margin-left: 30vw-100px;
         	}
 
-        	input[type="button"] {
+        	input[type="button"],.navButton {
+        		font-family: 'Lora';
         		width: 20vw;
         		line-height: 30px;
 				margin-top: 10px;
@@ -46,6 +47,11 @@
         		border-style: solid;
         		border-width: 1px;
         		border-color: #000;
+        		font-size: 100%;
+        	}
+
+        	a {
+        		text-decoration: none;
         	}
 
         	input.newSecret {
@@ -253,7 +259,7 @@
                     <div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
                 </div>
 				<div class="scan">
-					<a href="href=javascript:scan();"><div class="scanSecret button" type="button" value="Scan QR code"></a>
+					<a href="href=javascript:scan();"><div class="scanSecret navButton" type="button">scan qr</div></a>
 				</div>
 				<div class="progress-bar">
 		    		<span class="progress-bar-fill" style="width: 100%"></span>
