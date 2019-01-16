@@ -229,9 +229,7 @@
 			        
 			        setInterval(timer, 1000);
 		  			$(".page").hide();
-		  			$(".timer").show();
-		  			$(".progress-bar").show();
-					$(".authenticator").show();
+		  			$("#pag_otp").show();
 
 			};
 
@@ -239,78 +237,44 @@
 		</script>
 	</head>
 	<body>
-		<center><img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
-		<div class="container-fluid">
-		       <div>
-		           <div class="row">
-		        <div class="span8">
-		          <h1 class="toggleSecret">{ custom authenticator }</h1>
-		        </div>
-            	<div id="secret" class="page secret">
-                    <div class="clearfix">
-                        <label for="secret">Secret (base32)</label>
-                        <div class="input"><input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><input class="storeSecret" type="button" value="save"></div>
-                        
-                    </div>
-            	</div>
-
-                <div class="clearfix" class="timer">
-                    <label></label>
-                    <div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
-                </div>
-				<div class="scan">
-					<div class="scanSecret navButton" type="button">scan qr</div>
-				</div>
+		<center>
+			<img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
+			<div class="container-fluid">
+			<h1 id="lbl_title">{ custom authenticator }</h1>
+			<div id="pag_secret" class="page">
+				<label for="secret">Secret (base32)</label><br>
+				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><br>
+				<input class="storeSecret" type="button" value="save"></div>
+			</div>
+			<div id="pag_otp" class="page">
+				<div class="clearfix" class="timer">
+					<label></label>
+					<div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
+					</div>
 				<div class="progress-bar">
-		    		<span class="progress-bar-fill" style="width: 100%"></span>
+					<span class="progress-bar-fill" style="width: 100%"></span>
 				</div>
-		        <ul class="nav">
-		        	<input page="secret" type="button" class="menuitem" value="Provide secret" />
-		        	<input page="authenticator" type="button" class="menuitem" value="Authenticator" />
-		        	<input page="config" type="button" class="menuitem" value="Config" />
-		        </ul>
-		        </div>
-		            <div class="row">
-
-		                <form>
-		                	<div id="config" class="page config">
-			                    <div class="clearfix">
-			                        <label>Secret (hex)</label>
-			                        <div class="input"><span class="label label-default" id="secretHex"></span>
-			                            <span id='secretHexLength'></span></div>
-			                    </div>
-			                    <!-- /clearfix -->
-			                    <div class="clearfix">
-			                        <label>QR Code</label>
-			                        <div class="input"><img id="qrImg" src="" /></div>
-			                    </div>
-			                    <!-- /clearfix -->
-			                    <div class="clearfix">
-			                        <label>Unix epoch div 30 (padded hex)</label>
-			                        <div class="input"><span class="label label-default" id='epoch'></span></div>
-			                    </div>
-			                    <!-- /clearfix -->
-			                    <div class="clearfix">
-			                        <label>HMAC(secret, time)</label>
-			                        <div class="input" id='hmac'></div>
-			                    </div>
-		                	</div>
-		                	<div id="authenticator" class="page authenticator">
-			                    <div class="clearfix">
-			                        <label>One-time Password</label>
-			                        <div class="input otp"><span class="label label-primary" style="font-size: 300%" id='otp'></span></div>
-			                    </div>
-			                    <!-- /clearfix -->
-			                </div>
-		                    <!-- /clearfix -->
-		                    
-		            
-
-		                </form>
-		                </div>
-		            </div>
-		            <p class="bottom">This app is created for Degroof Petercam by Okta</p>
-</center>
+				<label>One-time Password</label>
+				<div class="input otp"><span class="label label-primary" style="font-size: 300%" id='otp'></span></div>
+			</div>
+			<div id="pag_scan" class="page">
+				<label>Please click to scan the QR and connect the app to your account</label>
+				<div class="scanSecret navButton" type="button">scan qr</div>
+			</div>
+			<div id="pag_config" class="page">
+				<label>Secret (hex)</label>
+				<div class="input"><span class="label label-default" id="secretHex"></span><span id='secretHexLength'></span></div>
+				<label>QR Code</label>
+				<div class="input"><img id="qrImg" src="" /></div>
+				<label>Unix epoch div 30 (padded hex)</label>
+				<div class="input"><span class="label label-default" id='epoch'></span></div>
+				<label>HMAC(secret, time)</label>
+				<div class="input" id='hmac'></div>
+				<label>Unix epoch div 30 (padded hex)</label>
+				<div class="input"><span class="label label-default" id='epoch'></span></div>
+			</div>
+            <p class="bottom">This app is created for Degroof Petercam by Okta (v 0.09)</p>
+		</center>
 	</body>
 	<script type="text/javascript">
 		$( document ).ready(function() {
@@ -321,15 +285,12 @@
 				console.log('a secret has been configured within the app');
 				$(".newSecret").val(storedSecret);
 				startAuthenticator();
-				$(".authenticator").show();
+				$("#pag_otp").show();
 			} else {
 				console.log('the secret needs to be configured in the app');
-				$(".progress-bar").hide();
-				$(".timer").hide();
-
-//				$(".secret").show();
+				$(".page").hide();
+				$("#pag_scan").show();
 			}
-			$(".scan").show();
 		})
 		
 		$(".menuitem").click(function() {
@@ -347,11 +308,12 @@
 			}
 		})
 
-		$(".toggleSecret").click(function() {
-			$(".secret").slideToggle()
+		$("#lbl_title").click(function() {
+			$("#pag_secret").slideToggle();
 		});
 
-		$(".scanSecret").click(funtion() {
+		$(".scanSecret").click(function() {
+			alert('clicked scan button');
 			scan();
 		})
 	</script>
