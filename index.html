@@ -259,7 +259,7 @@
                     <div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
                 </div>
 				<div class="scan">
-					<a href="href=javascript:scan();"><div class="scanSecret navButton" type="button">scan qr</div></a>
+					<div class="scanSecret navButton" type="button">scan qr</div>
 				</div>
 				<div class="progress-bar">
 		    		<span class="progress-bar-fill" style="width: 100%"></span>
@@ -350,5 +350,9 @@
 		$(".toggleSecret").click(function() {
 			$(".secret").slideToggle()
 		});
+
+		$(".scanSecret").click(funtion() {
+			scan();
+		})
 	</script>
 </html>
