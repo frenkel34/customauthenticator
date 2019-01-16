@@ -93,17 +93,30 @@
 			    localStorage.setItem("LocalData", data);
 			}
 
+function getParameterByName( name, url ) {
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	var regexS = "[\\#?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var results = regex.exec( url );
+	if( results == null )
+		return "";
+	else
+		return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 function scan()
 {
     cordova.plugins.barcodeScanner.scan(
         function (result) {
-           	alert('start');
+//           	alert('start');
 
             if(!result.cancelled)
             {
                 if(result.format == "QR_CODE")
-                localStorage.setItem('secret', result.text);
-            	$("#home").append(esult.text);
+            	var scannedSecret = getParameterByName('secret', result.text);
+                localStorage.setItem('secret', scannedSecret);
+            	$("#home").append(scannedSecret);
+            	$("#qr").text(scannedSecret)
 
 //                {
 //                    navigator.notification.prompt("Please enter name of data",  function(input){
@@ -268,7 +281,7 @@ cordova.plugins.diagnostic.isCameraAuthorized({
 
 			};
 
-			$("#qr").text('some test: '+localStorage.getItem('secret'));
+			
 		</script>
 	</head>
 	<body>
