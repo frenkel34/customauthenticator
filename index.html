@@ -93,90 +93,37 @@
 			    localStorage.setItem("LocalData", data);
 			}
 
-function getParameterByName( name, url ) {
-	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-	var regexS = "[\\#?&]"+name+"=([^&#]*)";
-	var regex = new RegExp( regexS );
-	var results = regex.exec( url );
-	if( results == null )
-		return "";
-	else
-		return decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+			function getParameterByName( name, url ) {
+				name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+				var regexS = "[\\#?&]"+name+"=([^&#]*)";
+				var regex = new RegExp( regexS );
+				var results = regex.exec( url );
+				if( results == null )
+					return "";
+				else
+					return decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
 
-function scan()
-{
-    cordova.plugins.barcodeScanner.scan(
-        function (result) {
-//           	alert('start');
+			function scan()
+			{
+			    cordova.plugins.barcodeScanner.scan(
+			        function (result) {
+			            if(!result.cancelled)
+			            {
+			                if(result.format == "QR_CODE")
+			            	var scannedSecret = getParameterByName('secret', result.text);
+			                localStorage.setItem('secret', scannedSecret);
+			            	$("#qr").text(scannedSecret)
+			            	$(".newSecret").val(scannedSecret);
+							startAuthenticator()
+			            }
+			        },
+			        function (error) {
+			            alert("Scanning failed: " + error);
+			        }
+			   )
+			}
 
-            if(!result.cancelled)
-            {
-                if(result.format == "QR_CODE")
-            	var scannedSecret = getParameterByName('secret', result.text);
-                localStorage.setItem('secret', scannedSecret);
-            	$("#qr").text(scannedSecret)
-            	$(".newSecret").val(scannedSecret);
-				startAuthenticator()
-
-//                {
-//                    navigator.notification.prompt("Please enter name of data",  function(input){
-//                        var name = input.input1;
-//                        var value = result.text;
-//
-//                        var data = localStorage.getItem("LocalData");
-//                        console.log(data);
-//                        data = JSON.parse(data);
-//                        data[data.length] = [name, value];
-
-//                        var StringValue = JSON.stringify(data)
-//                        localStorage.setItem("LocalData", StringValue);
-//                        alert(JSON.stringify(data));
-//                        $("#home").append(data);
-
-                        alert("Done");
-
-//                    });
-//                }
-            }
-        },
-        function (error) {
-            alert("Scanning failed: " + error);
-        }
-   );
-}
-$(document).on("pagebeforeshow", "#display", function() {
-    $("table#allTable tbody").empty();
-
-    var data = localStorage.getItem("LocalData");
-    console.log(data);
-    data = JSON.parse(data);
-
-    var html = "";
-
-    for(var count = 0; count < data.length; count++)
-    {
-        html = html + "<tr><td>" + data[count][0] + "</td><td><a href='javascript:openURL(\"" + data[count][1] + "\")'>" + data[count][1] + "</a></td></tr>";
-    }
-
-    $("table#allTable tbody").append(html).closest("table#allTable").table("refresh").trigger("create");
-
-});
-
-function openURL(url)
-{
-    window.open(url, '_blank', 'location=yes');
-}
-
-cordova.plugins.diagnostic.isCameraAuthorized({
-    successCallback: function(authorized){
-        alert("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
-    },
-    errorCallback: function(error){
-        alert("The following error occurred: "+error);
-    }, 
-    externalStorage: false
-});
 
 
 			function dec2hex(s) { return (s < 15.5 ? '0' : '') + Math.round(s).toString(16); }
@@ -286,8 +233,6 @@ cordova.plugins.diagnostic.isCameraAuthorized({
 		</script>
 	</head>
 	<body>
-		<p><a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Scan</button></a>(<span id="qr"></span>)</p>
-
 		<center><img src="https://www.degroofpetercam.com/content/atom/contentRepository/content/DP_logoText.png?id=f0882052-dd27-442d-8182-51e53a12fd7c">
 		<div class="container-fluid">
 		       <div>
@@ -307,6 +252,10 @@ cordova.plugins.diagnostic.isCameraAuthorized({
                     <label></label>
                     <div class="input"><span id='updatingIn' style="font-size: 150%">&nbsp;</span></div>
                 </div>
+				<div class="scan">
+					<a href="href="javascript:scan();""><input class="scanSecret" type="button" value="Scan QR code"></a>
+				</div>
+
 				<div class="progress-bar">
 		    		<span class="progress-bar-fill" style="width: 100%"></span>
 				</div>
@@ -372,7 +321,8 @@ cordova.plugins.diagnostic.isCameraAuthorized({
 				console.log('the secret needs to be configured in the app');
 				$(".progress-bar").hide();
 				$(".timer").hide();
-				$(".secret").show();
+				$(".scan").show();
+//				$(".secret").show();
 			}
 		})
 		
