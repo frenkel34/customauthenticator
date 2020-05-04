@@ -2,7 +2,7 @@
 	<head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 		<script type="text/javascript" src="cordova.js"></script>
         <style>
@@ -25,7 +25,7 @@
         	}
 
         	h1, body {
-        		font-family: 'Lora';
+        		font-family: 'Montserrat', sans-serif;
         		margin-left: 0;
         		margin-right: 0;
         		margin-top: 30px;
@@ -36,12 +36,12 @@
         	}
 
         	input[type="button"], .navButton {
-        		font-family: 'Lora';
-        		width: 20vw;
-        		line-height: 30px;
-				margin-top: 10px;
+        		font-family: 'Montserrat', sans-serif;
+        		width: 40vw;
+        		line-height: 60px;
+				margin-top: 20px;
 				margin-bottom: 10px;
-        		background-color: #00CD76;
+        		background-color: #1a1a1a;
         		border-radius: 0px;
         		box-shadow: 0px;
         		color: #fff;
@@ -246,9 +246,18 @@
 	</head>
 	<body>
 		<center>
-			<img src="logo.png">
+			<style>
+				.callus {
+					height: 90px;
+					background-color: #1a1a1a;
+					text-align: center;
+					margin-bottom: 20px;
+				}
+			</style>
+			<div class="callus"><a href="tel:+27860606060"><img src="callus.png"/></a></div>
+			<img style="width: 200px;" src="logo.png">
 			<div class="container-fluid">
-			<h1 id="lbl_title">{ custom authenticator }</h1>
+			<h1 id="lbl_title">OML authenticator</h1>
 			<div id="pag_secret" class="page">
 				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><br>
 				<a class="storeSecret" href="#">save secret</a> or <a class="resetSecret" href="#">reset app</a>
@@ -280,7 +289,7 @@
 				<label>Unix epoch div 30 (padded hex)</label>
 				<div class="input"><span class="label label-default" id='epoch'></span></div>
 			</div>
-            <p class="bottom">This app is created for Degroof Petercam by Okta (v 0.11)</p>
+            <p class="bottom">This app is created for OML (v 0.1) and not to be used in prodduction.</p>
 		</center>
 	</body>
 	<script type="text/javascript">
