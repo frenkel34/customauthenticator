@@ -247,17 +247,22 @@
 	<body>
 		<center>
 			<style>
+				.imgcallus {
+					margin-left: 5vw;
+					width: 80vw;
+					max-height: 20px;
+					max-width: 200px;
+				}
+
 				.callus {
-					height: 90px;
 					background-color: #1a1a1a;
 					text-align: center;
 					margin-bottom: 20px;
 				}
 			</style>
-			<div class="callus"><a href="tel:+27860606060"><img src="callus.png"/></a></div>
-			<img style="width: 200px;" src="logo.png">
+			<div class="callus"><a href="tel:+27860606060"><img class="imgcallus" src="callus.png"/></a></div>
+			<img style="max-width: 80vw; max-height: 150px;" src="homelogo.gif">
 			<div class="container-fluid">
-			<h1 id="lbl_title">OML authenticator</h1>
 			<div id="pag_secret" class="page">
 				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><br>
 				<a class="storeSecret" href="#">save secret</a> or <a class="resetSecret" href="#">reset app</a>
