@@ -22,33 +22,40 @@
         	h1 {
         		font-size: 150%;
         		margin-bottom: 50px;
+        		text-transform: uppercase;
         	}
 
         	h1, body {
-        		font-family: 'Montserrat', sans-serif;
+        		font-family: "Open Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
         		margin-left: 0;
         		margin-right: 0;
         		margin-top: 30px;
+        		color:#fff;
         	}
 
         	body {
         		margin-left: 30vw-100px;
+        		background-color: #3b87a2;
         	}
 
         	input[type="button"], .navButton {
-        		font-family: 'Montserrat', sans-serif;
+        		font-family: "Open Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+        		font-weight: bold;
+        		text-transform: uppercase;
         		width: 40vw;
         		line-height: 60px;
 				margin-top: 20px;
 				margin-bottom: 10px;
-        		background-color: #1a1a1a;
+        		background-color: #34618e;
         		border-radius: 0px;
         		box-shadow: 0px;
         		color: #fff;
         		border-style: solid;
-        		border-width: 1px;
-        		border-color: #000;
+        		border-width: 0px;
+        		border-color: #fff;
         		font-size: 100%;
+        		color: #fff;
+
         	}
 
         	a {
@@ -256,7 +263,7 @@
 			</style>
 			<img style="height: 80px;" src="logo.png">
 			<div class="container-fluid">
-			<h1 id="lbl_title">Atko Authenticator</h1>
+			<h1 id="lbl_title">Authenticator</h1>
 			<div id="pag_secret" class="page">
 				<input type="text" size="30" name="secret" id="secret" class="xlarge newSecret" value="" /><br>
 				<a class="storeSecret" href="#">save secret</a> or <a class="resetSecret" href="#">reset app</a>
@@ -288,7 +295,7 @@
 				<label>Unix epoch div 30 (padded hex)</label>
 				<div class="input"><span class="label label-default" id='epoch'></span></div>
 			</div>
-            <p class="bottom">This app is created for Atko inc. (v 0.1.1) and not to be used in production.</p>
+            <p class="bottom">This app is created for IRIS Software Group (v 0.1.1) and not to be used in production.</p>
 		</center>
 	</body>
 	<script type="text/javascript">
