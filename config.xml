@@ -20,22 +20,22 @@
     <preference name="android-minSdkVersion" value="14" />
     <plugin name="cordova-universal-links-plugin" source="npm" />
     <platform name="ios">
-        <icon height="57" platform="ios" src="logo.png" width="57" />
-        <icon height="114" platform="ios" src="logo.png" width="114" />
-        <icon height="40" platform="ios" src="logo.png" width="40" />
-        <icon height="80" platform="ios" src="logo.png" width="80" />
-        <icon height="50" platform="ios" src="logo.png" width="50" />
-        <icon height="100" platform="ios" src="logo.png" width="100" />
-        <icon height="60" platform="ios" src="logo.png" width="60" />
-        <icon height="120" platform="ios" src="logo.png" width="120" />
-        <icon height="180" platform="ios" src="logo.png" width="180" />
-        <icon height="72" platform="ios" src="logo.png" width="72" />
-        <icon height="144" platform="ios" src="logo.png" width="144" />
-        <icon height="76" platform="ios" src="logo.png" width="76" />
+        <icon height="57" platform="ios" src="logo.jpg" width="57" />
+        <icon height="114" platform="ios" src="logo.jpg" width="114" />
+        <icon height="40" platform="ios" src="logo.jpg" width="40" />
+        <icon height="80" platform="ios" src="logo.jpg" width="80" />
+        <icon height="50" platform="ios" src="logo.jpg" width="50" />
+        <icon height="100" platform="ios" src="logo.jpg" width="100" />
+        <icon height="60" platform="ios" src="logo.jpg" width="60" />
+        <icon height="120" platform="ios" src="logo.jpg" width="120" />
+        <icon height="180" platform="ios" src="logo.jpg" width="180" />
+        <icon height="72" platform="ios" src="logo.jpg" width="72" />
+        <icon height="144" platform="ios" src="logo.jpg" width="144" />
+        <icon height="76" platform="ios" src="logo.jpg" width="76" />
         <icon height="152" platform="ios" src="www/res/icon/ios/icon-76@2x.png" width="152" />
-        <icon height="29" platform="ios" src="logo.png" width="29" />
-        <icon height="58" platform="ios" src="logo.png" width="58" />
-        <icon height="87" platform="ios" src="logo.png" width="87" />
+        <icon height="29" platform="ios" src="logo.jpg" width="29" />
+        <icon height="58" platform="ios" src="logo.jpg" width="58" />
+        <icon height="87" platform="ios" src="logo.jpg" width="87" />
 		<!--  Storyboard portrait  -->
 		<splash src="res/screen/ios/Default@2x~iphone~anyany.png"/>
 		<splash src="res/screen/ios/Default@2x~iphone~comany.png"/>
